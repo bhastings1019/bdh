@@ -1,0 +1,37 @@
+# version: 1.0.0
+# this is assuming bash, though can be updated to incorporate zsh, or other profiles
+# usage ex: 
+# ./nvm-install-macos 14.16.0
+# ./nvm-install-macos
+
+echo "Uaage: ./test 14.17.6"
+
+arg1=""
+arg2=""
+
+# Check if the optional node version argument is provided
+# if [ "$#" -lt 1 ]; then
+#   echo "Error: 1 arg required specifying terminal shell profile file name"
+#   exit 1
+# else
+#   arg1="$1"
+# fi
+
+if [ "$#" -eq 2 ]; then
+  arg2="$2"
+else
+  arg2="14.17.6"
+fi
+
+echo "Using shell profile: $arg1"
+echo "Using node version: $arg2"
+
+curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.5/install.sh | bash
+cat << EOF >> $HOME/$arg1
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"
+EOF
+source $HOME/.bash_profile
+nvm install $arg2
+nvm use $arg2
